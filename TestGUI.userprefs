@@ -1,15 +1,21 @@
 ﻿<Properties StartupConfiguration="{3CDB70AF-EECB-41D9-AD56-282C13234293}|Default">
-  <MonoDevelop.Ide.Workbench ActiveDocument="TestGUIBegin/GUIForm.cs">
+  <MonoDevelop.Ide.Workbench ActiveDocument="TestGUIBegin/GUIForm.Designer.cs">
     <Files>
-      <File FileName="TestGUIBegin/GUIForm.cs" Line="28" Column="4" />
-      <File FileName="TestGUIBegin/LuceneApplication.cs" Line="66" Column="64" />
+      <File FileName="TestGUIBegin/LuceneApplication.cs" Line="143" Column="29" />
+      <File FileName="TestGUIBegin/GUIForm.cs" Line="70" Column="23" />
+      <File FileName="TestGUIBegin/GUIForm.Designer.cs" Line="81" Column="54" />
+      <File FileName="TestGUIBegin/AcadamicPublication.cs" Line="5" Column="30" />
+      <File FileName="TestGUIBegin/Program.cs" Line="1" Column="1" />
+      <File FileName="TestGUIBegin/QueryExpansion.cs" Line="8" Column="4" />
     </Files>
     <Pads>
       <Pad Id="ProjectPad">
         <State name="__root__">
           <Node name="TestGUI" expanded="True">
             <Node name="TestGUI" expanded="True">
-              <Node name="GUIForm.cs" expanded="True" selected="True" />
+              <Node name="GUIForm.cs" expanded="True">
+                <Node name="GUIForm.Designer.cs" selected="True" />
+              </Node>
             </Node>
           </Node>
         </State>
@@ -18,9 +24,7 @@
   </MonoDevelop.Ide.Workbench>
   <MonoDevelop.Ide.Workspace ActiveConfiguration="Debug" />
   <MonoDevelop.Ide.DebuggingService.Breakpoints>
-    <BreakpointStore>
-      <RunToCursorBreakpoint file="/Users/simonttk/Downloads/TestGUI-2/TestGUIBegin/LuceneApplication.cs" line="22" column="41" />
-    </BreakpointStore>
+    <BreakpointStore />
   </MonoDevelop.Ide.DebuggingService.Breakpoints>
   <MonoDevelop.Ide.DebuggingService.PinnedWatches />
   <MonoDevelop.Ide.ItemProperties.LuceneApplicationForIFN647Project PreferredExecutionTarget="MonoDevelop.Default" />

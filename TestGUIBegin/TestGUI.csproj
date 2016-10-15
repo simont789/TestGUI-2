@@ -123,6 +123,7 @@
     </Compile>
     <Compile Include="LuceneApplication.cs" />
     <None Include="packages.config" />
+    <Compile Include="AcadamicPublication.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />

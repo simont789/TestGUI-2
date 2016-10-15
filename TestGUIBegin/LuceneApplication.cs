@@ -10,6 +10,7 @@ using Lucene.Net.Index; //for index writer
 using Lucene.Net.QueryParsers; // for query parser
 using Lucene.Net.Search;
 using Lucene.Net.Store; //for Directory
+using System.IO;
 
 
 namespace LuceneApplicationForIFN647Project
@@ -22,11 +23,15 @@ namespace LuceneApplicationForIFN647Project
 		Lucene.Net.Index.IndexWriter indexWriter;
 		IndexSearcher indexSearcher;
 		QueryParser queryParser;
+		Lucene.Net.Search.TopDocs topdocs;
 
         const Lucene.Net.Util.Version VERSION = Lucene.Net.Util.Version.LUCENE_30;
+		const string DOCID_FN = "DocID";
         const string TITLE_FN = "Title";
         const string AUTHOR_FN = "Author";
-        const string PUBLISHER_FN = "Publisher";
+		const string BIBLIOGRAPHICINFORMATION_FN = "BibliographicInformation";
+		const string ABSTRACT_FN = "Abstract";
+
 
         public LuceneApplication()
         {
@@ -42,7 +47,7 @@ namespace LuceneApplicationForIFN647Project
         /// Creates the index at indexPath
         /// </summary>
         /// <param name="indexPath">Directory path to create the index</param>
-        public void CreateIndex(string indexPath)
+        public void CreateIndexFrom(string indexPath)
         {
 
             IndexWriter.MaxFieldLength mfl = new IndexWriter.MaxFieldLength(IndexWriter.DEFAULT_MAX_FIELD_LENGTH);
@@ -51,45 +56,41 @@ namespace LuceneApplicationForIFN647Project
 
         }
 
-        // Activity 4
-        /// <summary>
-        /// Indexes information relating to books
-        /// </summary>
-        /// <param name="author">The Book's author</param>
-        /// <param name="title">The Book's title</param>
-        /// <param name="publisher">The Book's publisher</param>
-        public void IndexBook(string author, string title, string publisher){
-            Lucene.Net.Documents.Field authorField = new Field(AUTHOR_FN, author, Field.Store.YES, Field.Index.ANALYZED, Field.TermVector.WITH_POSITIONS_OFFSETS);
-            Lucene.Net.Documents.Field titleField = new Field(TITLE_FN, title, Field.Store.YES, Field.Index.ANALYZED, Field.TermVector.WITH_POSITIONS_OFFSETS);
-//            Lucene.Net.Documents.Field publisherField = new Field(PUBLISHER_FN, publisher, Field.Store.YES, Field.Index.ANALYZED, Field.TermVector.WITH_POSITIONS_OFFSETS);
-            Lucene.Net.Documents.Field publisherField = new Field(PUBLISHER_FN, publisher, Field.Store.NO, Field.Index.ANALYZED, Field.TermVector.WITH_POSITIONS_OFFSETS);
-            Lucene.Net.Documents.Document doc = new Document();
-            authorField.Boost = 2; // activity 9
-            doc.Add(authorField);
-            doc.Add(titleField);
-            doc.Add(publisherField);
-            indexWriter.AddDocument(doc);
-        }
+		public void ReadTextFilesAndIndexTextFrom(string collectionPath)
+		{
+			
+			try
+			{
+				foreach (string file in System.IO.Directory.EnumerateFiles(collectionPath))
+				{
+					string acadamicPublicationFile = File.ReadAllText(file);
+					indexWriter.AddDocument(CreateDocWith(acadamicPublicationFile));
+				}
 
-        // Activity 10
-        /// <summary>
-        /// Indexes information relating to books
-        /// </summary>
-        /// <param name="book">The book</param>
-        public void IndexBook(Book book)
-        {
+			}
+			catch (Exception e) {
+				Console.WriteLine(e);
+			}
 
-            // TODO: Enter code to index text
-            Lucene.Net.Documents.Field authorField = new Field(AUTHOR_FN, book.Author, Field.Store.YES, Field.Index.ANALYZED, Field.TermVector.WITH_POSITIONS_OFFSETS);
-            Lucene.Net.Documents.Field textField = new Field(TITLE_FN, book.Title, Field.Store.YES, Field.Index.ANALYZED, Field.TermVector.WITH_POSITIONS_OFFSETS);
-            Lucene.Net.Documents.Field publisherField = new Field(PUBLISHER_FN, book.Publisher, Field.Store.NO, Field.Index.ANALYZED, Field.TermVector.WITH_POSITIONS_OFFSETS);
-            Lucene.Net.Documents.Document doc = new Document();
-            authorField.Boost = 2; // activity 9
-            doc.Add(authorField);
-            doc.Add(textField);
-            doc.Add(publisherField);
-            indexWriter.AddDocument(doc);
-        }
+		}
+
+		public Lucene.Net.Documents.Document CreateDocWith(string fileContent) {
+			Lucene.Net.Documents.Document doc = new Lucene.Net.Documents.Document();
+
+			string[] tags = { ".I", "\n.T\n", "\n.A\n", "\n.B\n", "\n.W\n" };
+			string[] splitedContentWithTags = fileContent.Split(tags, StringSplitOptions.None);
+
+			// edit indexing method here
+
+			doc.Add(new Field(DOCID_FN, splitedContentWithTags[0], Field.Store.NO, Field.Index.NO));
+			doc.Add(new Field(TITLE_FN, splitedContentWithTags[1], Field.Store.YES, Field.Index.ANALYZED));
+			doc.Add(new Field(AUTHOR_FN, splitedContentWithTags[2], Field.Store.YES, Field.Index.ANALYZED));
+			doc.Add(new Field(BIBLIOGRAPHICINFORMATION_FN, 
+			                  splitedContentWithTags[4].Replace(splitedContentWithTags[1] + "\n", ""), // remove title from abstract
+			                  Field.Store.YES, Field.Index.NOT_ANALYZED));
+			doc.Add(new Field(ABSTRACT_FN, splitedContentWithTags[4], Field.Store.YES, Field.Index.ANALYZED));
+			return doc;
+		}
 
         /// <summary>
         /// Flushes the buffer and closes the index
@@ -101,6 +102,13 @@ namespace LuceneApplicationForIFN647Project
             indexWriter.Dispose();
         }
 
+		public string ExpandQuery()
+		{
+			string result = "";
+
+
+			return result;
+		}
 
         /// <summary>
         /// Creates objects to start up the search
@@ -124,28 +132,28 @@ namespace LuceneApplicationForIFN647Project
         }
 
 
-        public void SearchAndDisplayResults(string querytext)
+		public void SearchFor(string querytext)
         {
             querytext = querytext.ToLower();
             Query query = queryParser.Parse(querytext);
-            TopDocs results = indexSearcher.Search(query, 100);
-           
-            System.Console.WriteLine("Found " + results.TotalHits + " documents.");
-
-
-            int rank = 0;
-            foreach (ScoreDoc scoreDoc in results.ScoreDocs)
-            {
-                rank++;
-                Lucene.Net.Documents.Document doc = indexSearcher.Doc(scoreDoc.Doc);
-                string titleValue = doc.Get(TITLE_FN).ToString();
-                string authorValue = doc.Get(AUTHOR_FN).ToString(); // activity 5
-//                string publisherValue = doc.Get(PUBLISHER_FN).ToString(); // activity 5, 7
-//                Console.WriteLine("Rank " + rank + " title " + titleValue);
-//                Console.WriteLine("Rank " + rank + " title " + titleValue + " author " + authorValue + " Publisher " + publisherValue); // Activity 5
-                Console.WriteLine("Rank " + rank + " title " + titleValue + " author " + authorValue); // Activity 7
-
-            }
+            topdocs = indexSearcher.Search(query, 100);
+			System.Console.WriteLine("Found " + results.TotalHits + " documents.");
         }
+
+		public AcadamicPublication GetAcadamicPublicationAt(int rank)
+		{
+			
+			ScoreDoc[] results = topdocs.ScoreDocs;
+
+			AcadamicPublication newAP = new AcadamicPublication();
+			Lucene.Net.Documents.Document doc = indexSearcher.Doc(results[i].Doc);
+			newAP.DocID = doc.Get(DOCID_FN);
+			newAP.Title = doc.Get(TITLE_FN);
+			newAP.Author = doc.Get(AUTHOR_FN);
+			newAP.BibliographicInformation = doc.Get(BIBLIOGRAPHICINFORMATION_FN);
+			newAP.Abstract = doc.Get(ABSTRACT_FN);
+
+			return newAP;
+		}
     }
 }
