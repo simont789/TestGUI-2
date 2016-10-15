@@ -1,0 +1,28 @@
+﻿<Properties StartupConfiguration="{3CDB70AF-EECB-41D9-AD56-282C13234293}|Default">
+  <MonoDevelop.Ide.Workbench ActiveDocument="TestGUIBegin/GUIForm.cs">
+    <Files>
+      <File FileName="TestGUIBegin/GUIForm.cs" Line="28" Column="4" />
+      <File FileName="TestGUIBegin/LuceneApplication.cs" Line="66" Column="64" />
+    </Files>
+    <Pads>
+      <Pad Id="ProjectPad">
+        <State name="__root__">
+          <Node name="TestGUI" expanded="True">
+            <Node name="TestGUI" expanded="True">
+              <Node name="GUIForm.cs" expanded="True" selected="True" />
+            </Node>
+          </Node>
+        </State>
+      </Pad>
+    </Pads>
+  </MonoDevelop.Ide.Workbench>
+  <MonoDevelop.Ide.Workspace ActiveConfiguration="Debug" />
+  <MonoDevelop.Ide.DebuggingService.Breakpoints>
+    <BreakpointStore>
+      <RunToCursorBreakpoint file="/Users/simonttk/Downloads/TestGUI-2/TestGUIBegin/LuceneApplication.cs" line="22" column="41" />
+    </BreakpointStore>
+  </MonoDevelop.Ide.DebuggingService.Breakpoints>
+  <MonoDevelop.Ide.DebuggingService.PinnedWatches />
+  <MonoDevelop.Ide.ItemProperties.LuceneApplicationForIFN647Project PreferredExecutionTarget="MonoDevelop.Default" />
+  <MonoDevelop.Ide.ItemProperties.TestGUI PreferredExecutionTarget="MonoDevelop.Default" />
+</Properties>

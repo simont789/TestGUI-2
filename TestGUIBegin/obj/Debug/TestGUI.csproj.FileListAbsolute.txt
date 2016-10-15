@@ -1,0 +1,3 @@
+C:\Users\Alan\Desktop\Teaching\ITN647 - Advanced IR\Pracs\Week 8\Questions\TestGUI\TestGUIBegin\bin\Debug\TestGUIBegin.exe.config
+C:\Users\Alan\Desktop\Teaching\ITN647 - Advanced IR\Pracs\Week 8\Questions\TestGUI\TestGUIBegin\obj\Debug\TestGUIBegin.exe
+C:\Users\Alan\Desktop\Teaching\ITN647 - Advanced IR\Pracs\Week 8\Questions\TestGUI\TestGUIBegin\obj\Debug\TestGUIBegin.pdb
